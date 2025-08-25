@@ -1,0 +1,29 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "AR Mustache Filter";
+}
+
+<div class="container">
+    <h1 class="text-center mt-4 mb-4">Thử bộ râu AR với MediaPipe</h1>
+
+    <div id="live-container">
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="output-canvas"></canvas>
+    </div>
+
+    <div id="controls" class="text-center mt-3">
+        <div class="form-check form-switch d-inline-block">
+            <input class="form-check-input" type="checkbox" role="switch" id="debug-mode">
+            <label class="form-check-label" for="debug-mode">Chế độ Debug</label>
+        </div>
+        <div id="debug-info" class="mt-2 text-start">
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+
+<script type="module" src="~/js/main.js"></script>
