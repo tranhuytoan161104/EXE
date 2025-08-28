@@ -1,0 +1,33 @@
+﻿@page
+@model LipstickModel
+@{
+    ViewData["Title"] = "3D Lipstick Try-On";
+}
+
+<div class="container">
+    <h1 class="text-center mt-4 mb-4">Thử son môi 3D chân thực (Phiên bản sửa lỗi)</h1>
+
+    <div id="live-container">
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="webgl-canvas"></canvas>
+    </div>
+
+    <div id="controls" class="text-center mt-3">
+        <div>
+            <label for="color-picker" class="form-label">Chọn màu son:</label>
+            <input type="color" id="color-picker" class="form-control-color" value="#E02D40">
+        </div>
+        <div class="form-check form-switch d-inline-block mt-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="debug-mode">
+            <label class="form-check-label" for="debug-mode">Chế độ Debug</label>
+        </div>
+        <div id="debug-info" class="mt-2 text-start">
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+
+<script type="module" src="~/js/lipstick.js"></script>

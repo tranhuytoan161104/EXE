@@ -3,10 +3,10 @@
 // MÔ TẢ:
 // - Truy cập camera của người dùng.
 // - Tải và cấu hình MediaPipe Face Mesh để phát hiện khuôn mặt.
-// - Tải dữ liệu và hình ảnh của bộ râu.
+// - Tải dữ liệu và hình ảnh của filter.
 // - Trong mỗi khung hình, phát hiện các điểm mốc trên khuôn mặt.
-// - Tính toán vị trí, tỷ lệ và góc xoay của bộ râu.
-// - Vẽ bộ râu và thông tin debug lên canvas.
+// - Tính toán vị trí, tỷ lệ và góc xoay của filter.
+// - Vẽ filter và thông tin debug lên canvas.
 // =================================================================================
 
 // --- Lấy các phần tử HTML ---
@@ -18,14 +18,14 @@ const debugInfoPanel = document.getElementById('debug-info');
 
 // --- Biến toàn cục ---
 let mustacheData = {}; // Lưu trữ dữ liệu từ file mustache.csv
-const mustacheImage = new Image(); // Đối tượng hình ảnh cho bộ râu
+const mustacheImage = new Image(); // Đối tượng hình ảnh cho filter
 
 // =================================================================================
 // BƯỚC 1: TẢI DỮ LIỆU VÀ HÌNH ẢNH CẦN THIẾT
 // =================================================================================
 
 /**
- * Tải và phân tích cú pháp tệp CSV chứa dữ liệu về bộ râu.
+ * Tải và phân tích cú pháp tệp CSV chứa dữ liệu về filter.
  * Dữ liệu này cho biết các điểm neo (trái, phải, trên, dưới) trên ảnh gốc.
  * @returns {Promise<object>} Một đối tượng chứa dữ liệu đã được phân tích.
  */
@@ -47,11 +47,11 @@ async function loadMustacheData() {
                 data.image_height = parseInt(image_height);
             }
         }
-        console.log("Tải dữ liệu bộ râu thành công:", data);
+        console.log("Tải dữ liệu filter thành công:", data);
         return data;
     } catch (error) {
         console.error("Lỗi khi tải file mustache.csv:", error);
-        alert("Không thể tải dữ liệu của bộ râu. Vui lòng kiểm tra console.");
+        alert("Không thể tải dữ liệu của filter. Vui lòng kiểm tra console.");
         return {};
     }
 }
@@ -63,12 +63,12 @@ loadMustacheData().then(data => {
 });
 
 mustacheImage.onload = () => {
-    console.log("Tải ảnh bộ râu thành công.");
+    console.log("Tải ảnh filter thành công.");
 };
 
 mustacheImage.onerror = () => {
     console.error("Lỗi khi tải file mustache.png.");
-    alert("Không thể tải hình ảnh bộ râu.");
+    alert("Không thể tải hình ảnh filter.");
 };
 
 // =================================================================================
@@ -140,7 +140,7 @@ function onResults(results) {
 
         // 1. VỊ TRÍ (ANCHOR POINT)
         // Ta chọn điểm mốc 164, là điểm ngay dưới vách ngăn mũi.
-        // Đây là vị trí neo rất ổn định cho bộ râu.
+        // Đây là vị trí neo rất ổn định cho filter.
         // Tọa độ là dạng chuẩn hóa (0.0 - 1.0), cần nhân với kích thước canvas.
         const anchorPoint = {
             x: landmarks[164].x * canvasElement.width,
@@ -153,11 +153,11 @@ function onResults(results) {
         const rightCheek = { x: landmarks[454].x * canvasElement.width, y: landmarks[454].y * canvasElement.height };
         const faceWidth = Math.hypot(rightCheek.x - leftCheek.x, rightCheek.y - leftCheek.y);
 
-        // Lấy chiều rộng gốc của bộ râu từ file CSV
+        // Lấy chiều rộng gốc của filter từ file CSV
         const originalMustacheWidth = mustacheData.right_point.x - mustacheData.left_point.x;
-        // Tỷ lệ = chiều rộng khuôn mặt thực tế / chiều rộng bộ râu gốc
+        // Tỷ lệ = chiều rộng khuôn mặt thực tế / chiều rộng filter gốc
         // Có thể nhân với một hệ số để tinh chỉnh kích thước cho vừa vặn hơn.
-        // THAM SỐ TÙY CHỈNH: Thay đổi giá trị 1.2 để làm bộ râu to hơn hoặc nhỏ hơn.
+        // THAM SỐ TÙY CHỈNH: Thay đổi giá trị 1.2 để làm filter to hơn hoặc nhỏ hơn.
         const scale = (faceWidth / originalMustacheWidth) * 1.2;
 
         // 3. GÓC XOAY (ROTATION)
@@ -165,7 +165,7 @@ function onResults(results) {
         const angle = Math.atan2(rightCheek.y - leftCheek.y, rightCheek.x - leftCheek.x);
 
 
-        // --- Vẽ bộ râu lên canvas ---
+        // --- Vẽ filter lên canvas ---
         canvasCtx.save();
 
         // Di chuyển gốc tọa độ đến điểm neo trên khuôn mặt
@@ -175,7 +175,7 @@ function onResults(results) {
         // Phóng to/thu nhỏ canvas
         canvasCtx.scale(scale, scale);
 
-        // Điểm neo trên ảnh bộ râu là "top_center".
+        // Điểm neo trên ảnh filter là "top_center".
         // Ta cần vẽ ảnh với một độ lệch âm để điểm neo này trùng với gốc tọa độ mới.
         const mustacheAnchor = mustacheData.top_center;
         canvasCtx.drawImage(
