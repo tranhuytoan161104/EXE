@@ -1,11 +1,11 @@
 ﻿@page
 @model LipstickModel
 @{
-    ViewData["Title"] = "3D Lipstick Try-On";
+    ViewData["Title"] = "Advanced AR Makeup Try-On";
 }
 
 <div class="container">
-    <h1 class="text-center mt-4 mb-4">Thử son môi 3D chân thực (Phiên bản sửa lỗi)</h1>
+    <h1 class="text-center mt-4 mb-4">Trải nghiệm AR Makeup Chuyên nghiệp</h1>
 
     <div id="live-container">
         <video id="webcam" autoplay playsinline></video>
@@ -13,21 +13,39 @@
     </div>
 
     <div id="controls" class="text-center mt-3">
-        <div>
-            <label for="color-picker" class="form-label">Chọn màu son:</label>
-            <input type="color" id="color-picker" class="form-control-color" value="#E02D40">
+        <div class="mb-3">
+            <label class="form-label fw-bold">Chọn màu son:</label>
+            <div id="color-palette">
+            </div>
         </div>
+
+        <div class="mb-2">
+            <label class="form-label fw-bold">Hiệu ứng làm đẹp da:</label>
+            <div class="skin-controls">
+                <div class="control-group">
+                    <label for="smoothing-slider">Làm mịn:</label>
+                    <input type="range" id="smoothing-slider" min="0" max="1" step="0.05" value="0.6">
+                </div>
+                <div class="control-group">
+                    <label for="brightening-slider">Làm sáng:</label>
+                    <input type="range" id="brightening-slider" min="0" max="0.2" step="0.01" value="0.08">
+                </div>
+                <div class="control-group">
+                    <label for="pinking-slider">Làm hồng da:</label>
+                    <input type="range" id="pinking-slider" min="0" max="0.1" step="0.01" value="0.03">
+                </div>
+            </div>
+        </div>
+
         <div class="form-check form-switch d-inline-block mt-2">
             <input class="form-check-input" type="checkbox" role="switch" id="debug-mode">
             <label class="form-check-label" for="debug-mode">Chế độ Debug</label>
         </div>
-        <div id="debug-info" class="mt-2 text-start">
-        </div>
+        <div id="debug-info" class="mt-2 text-start"></div>
     </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/@@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
 
 <script type="module" src="~/js/lipstick.js"></script>

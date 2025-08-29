@@ -5,43 +5,92 @@
     background-color: #f0f0f0;
 }
 
-/* Container chính để giữ video và canvas */
 #live-container {
     position: relative;
-    width: 640px; /* Chiều rộng mặc định */
-    height: 480px; /* Chiều cao mặc định */
+    width: 640px;
+    height: 480px;
     margin: 0 auto;
     border: 2px solid #333;
     border-radius: 10px;
-    overflow: hidden; /* Ẩn các phần tử con tràn ra ngoài */
+    overflow: hidden;
 }
 
-/* Định dạng cho cả video và canvas */
-#webcam, #output-canvas {
+#webcam, #webgl-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Đảm bảo video lấp đầy container */
+    object-fit: cover;
 }
 
-/* Ẩn video gốc đi, vì chúng ta chỉ muốn hiển thị canvas */
 #webcam {
-    visibility: visible; /* Cho video hiện ra */
+    transform: scaleX(-1);
+    z-index: 1;
 }
 
-/* Định dạng cho vùng điều khiển */
+#webgl-canvas {
+    z-index: 2;
+}
+
 #controls {
     width: 640px;
     margin: 15px auto;
-    padding: 10px;
+    padding: 15px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Định dạng cho vùng thông tin debug */
+/* === GIAO DIỆN MỚI === */
+#color-palette {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 5px 0;
+}
+
+.color-swatch {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+    .color-swatch:hover {
+        transform: scale(1.1);
+    }
+
+    .color-swatch.active {
+        border: 3px solid #007bff;
+        transform: scale(1.15);
+    }
+
+.skin-controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+    .control-group label {
+        margin-bottom: 5px;
+    }
+
+    .control-group input[type="range"] {
+        width: 150px;
+    }
+/* === KẾT THÚC GIAO DIỆN MỚI === */
+
 #debug-info {
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.9em;
@@ -49,31 +98,5 @@
     color: #61dafb;
     padding: 10px;
     border-radius: 5px;
-    display: none; /* Mặc định ẩn đi */
-}
-
-#webgl-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-/* Ẩn video gốc để chỉ hiển thị canvas */
-#webcam {
-    visibility: visible; /* Cho video hiện ra */
-    transform: scaleX(-1); /* Lật ngang video */
-}
-
-/* Định dạng cho vùng thông tin debug */
-#debug-info {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.9em;
-    background-color: #282c34;
-    color: #61dafb;
-    padding: 10px;
-    border-radius: 5px;
-    display: none; /* Mặc định ẩn đi */
+    display: none;
 }
